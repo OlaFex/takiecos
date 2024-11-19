@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logiczna Gra: Znajdź Skarbiec</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #f0a500;
+            text-shadow: 0 0 10px #f0a500, 0 0 20px #f0a500;
+        }
+
+        .stage {
+            display: none;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .input-container {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #f0a500;
+            background-color: #000;
+            color: #fff;
+            border-radius: 5px;
+            width: 80%;
+            text-align: center;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #f0a500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ffcc00;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Znajdź Skarbiec</h1>
+    <div id="stage1" class="stage visible">
+        <p>Zagadka 1: Jestem czymś, co nieustannie idzie do przodu, ale nigdy się nie cofa. Co to jest?</p>
+        <div class="input-container">
+            <input type="text" id="answer1" placeholder="Twoja odpowiedź">
+            <button onclick="checkAnswer(1)">Sprawdź</button>
+        </div>
+        <div id="message1" class="message"></div>
+    </div>
+    <div id="stage2" class="stage">
+        <p>Zagadka 2: Kto jest patronem ekonomika?</p>
+        <div class="input-container">
+            <input type="text" id="answer2" placeholder="Twoja odpowiedź">
+            <button onclick="checkAnswer(2)">Sprawdź</button>
+        </div>
+        <div id="message2" class="message"></div>
+    </div>
+    <div id="stage3" class="stage">
+        <p>Zagadka 3: Stoisz przed trzema drzwiami. Jedne prowadzą do skarbca, ale dwie inne są fałszywe.<br>
+        Wybierz drzwi: A, B, czy C?</p>
+        <div class="input-container">
+            <input type="text" id="answer3" placeholder="Twoja odpowiedź (A/B/C)">
+            <button onclick="checkAnswer(3)">Sprawdź</button>
+        </div>
+        <div id="message3" class="message"></div>
+    </div>
+    <div id="winMessage" class="stage">
+        <h2>Brawo!</h2>
+        <p>Odkryłeś skarbiec! W środku znajdziesz... coś niespodziewanego. 🎉</p>
+    </div>
+
+    <script>
+        let currentStage = 1;
+
+        const answers = {
+            1: "czas",   // Odpowiedź na pierwszą zagadkę
+            2: "mikołaj kopernik", // Odpowiedź na zagadkę nr 2
+            3: "B"       // Właściwe drzwi
+        };
+
+        function checkAnswer(stage) {
+            const input = document.getElementById(`answer${stage}`);
+            const message = document.getElementById(`message${stage}`);
+            const userAnswer = input.value.trim().toLowerCase();
+
+            if (userAnswer === answers[stage].toLowerCase()) {
+                message.textContent = "Dobrze! Przechodzisz dalej.";
+                message.style.color = "#00ff00";
+
+                if (stage < 3) {
+                    setTimeout(() => {
+                        document.getElementById(`stage${stage}`).classList.remove('visible');
+                        document.getElementById(`stage${stage + 1}`).classList.add('visible');
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById(`stage${stage}`).classList.remove('visible');
+                        document.getElementById("winMessage").classList.add('visible');
+                    }, 1000);
+                }
+            } else {
+                message.textContent = "Źle! Spróbuj jeszcze raz.";
+                message.style.color = "#ff0000";
+            }
+        }
+    </script>
+</body>
+</html>
